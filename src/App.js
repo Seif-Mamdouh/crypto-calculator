@@ -6,13 +6,25 @@ import "./style.css";
 
 export default function App() {
   const [buy, setBuy] = useState("");
+
+  const coingeckoUrl = (date) => {
+    return `https://api.coingecko.com/api/v3/coins/bitcoin/history?date=${date}&localization=false`;
+  }; 
+  const coingeckoFetch = async (date) => {
+    fetch(coingeckoUrl(date)).then((response) =>
+      response.json().then((jsonData) => {
+        setBuy(jsonData);
+        console.log(jsonData);
+      })
+    );
+  };
+
   return (
     <div className="App">
-      <input defaultValue={buy} onChange={(e) => setBuy(e.target.value)} />
-      <h3> {buy} </h3>
+      <input defaultValue={buy} onChange={(e) => setBuy(e.target.value)}/>
+      <h3> {buy.market_data?.current_price.usd} USD</h3>
     </div>
   );
 }
-
 
 // export default App;
